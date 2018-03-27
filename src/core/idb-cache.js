@@ -114,9 +114,9 @@ export default class IDBCache {
     return await getResponse(store.getAllKeys());
   }
 
-  async destroy() {
+  destroy(name) {
     return new Promise((resolve, reject) => {
-      const request = window.indexedDB.deleteDatabase(this.name);
+      const request = window.indexedDB.deleteDatabase(name);
       request.onerror = () => {
         reject(new DOMException(request.error.message, request.error.name));
       };
