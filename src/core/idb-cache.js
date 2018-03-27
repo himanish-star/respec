@@ -113,6 +113,18 @@ export default class IDBCache {
     const store = await getStore(db, storeName, "readonly");
     return await getResponse(store.getAllKeys());
   }
+
+  async destroy() {
+    return new Promise((resolve, reject) => {
+      const request = window.indexedDB.deleteDatabase(this.name);
+      request.onerror = () => {
+        reject(new DOMException(request.error.message, request.error.name));
+      };
+      request.onsuccess = () => resolve(request.result);
+      request.onblocked = () => resolve(request.result);
+    });
+  }
+
 }
 
 /**
