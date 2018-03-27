@@ -1,10 +1,10 @@
 "use strict";
 
 describe("Core - Idb Cache", () => {
-  let IDBCache;
+  let idbCache;
   beforeAll(done => {
-    require(["core/idb-cache"], ({ IDBCache: idbCache }) => {
-      IDBCache = idbCache;
+    require(["core/idb-cache"], (IDBCache) => {
+      idbCache = IDBCache;
       done();
     });
   });
@@ -12,15 +12,15 @@ describe("Core - Idb Cache", () => {
   describe("put() method", () => {
 
     it("stores data in pairs of key and value", async () => {
-      IDBCache = new IDBCache("test-cache", ["storeA", "storeB"]);
-      await IDBCache.put("storeA", { prop: "pass store A" });
-      await IDBCache.put("storeB", { prop: "pass store B" });
+      let IDBCache = new idbCache("test-cache", ["storeA", "storeB"]);
+      await IDBCache.put("storeAKey", { prop: "pass store A" });
+      await IDBCache.put("storeBKey", { prop: "pass store B" }, "storeB");
       expect(IDBCache.has("storeA")).toBe(true);
       expect(IDBCache.has("storeB")).toBe(true);
       const storeAData = IDBCache.get("storeA");
       const storeBData = IDBCache.get("storeB");
-      expect(storeAData.prop).toBe("pass store A");
-      expect(storeBData.prop).toBe("pass store B");
+      expect(storeAData.storeAKey.prop).toBe("pass store A");
+      expect(storeBData.storeBKey.prop).toBe("pass store B");
     });
   })
 });
